@@ -30,3 +30,101 @@ class quick_sort():
 if __name__ == '__main__':
     s = quick_sort()
     print(s.quicksort([1,4,6,2,7,3,6,3]))
+    
+#插入排序
+def insertsort(nums):
+    if not nums:
+        return nums
+    length = len(nums)
+    for i in range(1,length):
+        key = nums[i]
+        while i > 0 and nums[i-1] > key:
+            nums[i] = nums[i-1]
+            i -= 1
+        nums[i] = key
+    return nums
+print(insertsort([1,4,6,2,7,3]))
+print(insertsort([]))
+print(insertsort([3]))
+
+#冒泡排序
+def bubblesort(nums):
+    if not nums:
+        return nums
+    length = len(nums)
+    for i in range(length):
+        for j in range(1,length-i):
+            if nums[j-1] > nums[j]:
+                nums[j-1],nums[j] = nums[j], nums[j-1]
+    return nums
+print(bubblesort([1,4,6,2,7,3]))
+print(bubblesort([]))
+print(bubblesort([3]))
+
+#短冒泡排序具有识别排序数组的优点，一旦数组已排好序，直接返回即可。
+def short_bubblesort(nums):
+    if not nums:
+        return nums
+    length = len(nums)
+    sorted = True
+    while length > 0 and sorted:
+        sorted = False
+        for j in range(1,length):
+                if nums[j - 1] > nums[j] and sorted:
+                    sorted = True
+                    nums[j - 1], nums[j] = nums[j], nums[j - 1]
+    return nums
+
+print(bubblesort([1,4,6,2,7,3]))
+print(bubblesort([]))
+print(bubblesort([3]))
+print(bubblesort([1,2,3,4,5,6,7,8]))
+
+#选择排序
+def selectsort(nums):
+    if not nums:
+        return nums
+    length = len(nums)
+    for i in range(length):
+        max = nums[0]
+        for j in range(length-i):
+            if nums[j] >= max:
+                max = nums[j]
+                position = j
+        nums[position], nums[length-i-1] = nums[length-i-1], nums[position]
+    return nums
+print(selectsort([1,4,6,2,7,3]))
+print(selectsort([]))
+print(selectsort([3]))
+
+#归并排序（较为冗长，下面可部分优化）
+def mergesort_v1(nums):
+    length = len(nums)
+    if length >1:
+        mid = length//2
+        left = nums[:mid]
+        right = nums[mid:]
+        mergesort_v1(left)
+        mergesort_v1(right)
+        i, j, k = 0, 0, 0
+        while len(left) > i and len(right) > j:
+            if left[i] < right[j]:
+                nums[k] = left[i]
+                i += 1
+            else:
+                 nums[k] = right[j]
+                 j += 1
+            k += 1
+        while len(left) > i:
+            nums[k] = left[i]
+            i += 1
+            k += 1
+        while len(right) > j:
+            nums[k] = right[j]
+            j += 1
+            k += 1
+    return nums
+print(mergesort_v1([1,4,6,2,7,3]))
+print(mergesort_v1([]))
+print(mergesort_v1([3]))
+
