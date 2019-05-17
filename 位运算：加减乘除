@@ -1,0 +1,88 @@
+#循环实现
+def add2(num1,num2):
+    sum = num1^num2
+    carry = (num1 & num2) << 1
+    while carry != 0:
+        a, b = sum, carry
+        sum = a ^ b
+        carry = (a & b) << 1
+    return sum
+#递归实现
+def add1(num1,num2):
+    if num2==0:
+        return num1
+    sum = num1^num2
+    carry = (num1 & num2)<<1
+    return add1(sum,carry)
+print(add2(2,-7))
+print(add1(2,5))
+print(add1(2,-6))
+
+#减法 需借助加法实现
+def substract(num1,num2):
+    subtractor = add2(~num2,1)
+    result = add2(num1,subtractor)
+    return result
+
+print(substract(4,-7))
+print(substract(4,7))
+
+#乘法运算，分为两步，一步处理符号，异或最高位判断符号即可。第二部累加即可。
+def multiply2(num1,num2):
+    multiplicand = num1 if num1 > 0 else add2(~num1,1)
+    multiplier = num2 if num2 > 0 else add2(~num2,1)
+    product, counter = 0, 0
+    while counter < multiplier:
+        product = add2(product,multiplicand)
+        counter = add2(counter,1)
+    if num1 ^ num2 < 0:
+        product = add2(~product,1)
+    return product
+
+#优化后的乘法，不再是累加，而是仿照乘法法则的方式计算
+def multiply(num1,num2):
+    multiplicand = num1 if num1 > 0 else add2(~num1,1)
+    multiplier = num2 if num2 > 0 else add2(~num2,1)
+    product = 0
+    while multiplier > 0:
+        if multiplier & 0x1 > 0:
+            product = add2(product, multiplicand)
+        multiplicand <<= 1
+        multiplier >>= 1
+    if num1 ^ num2 < 0:
+        product = add2(~product,1)
+    return product
+print(multiply2(3,7))
+print(multiply2(3,-9))
+print(multiply(3,7))
+print("结果是%d" % multiply(3,-9))
+
+#除法运算，仿照之前的乘法，也有两种方法。
+def divide1(num1,num2):
+    dividend = num1 if num1 > 0 else add2(~num1,1)
+    divisor = num2 if num2 > 0 else add2(~num2,1)
+    quotient = 0
+    remainder = 0
+    while dividend >= divisor:
+        quotient = add2(quotient,1)
+        dividend = substract(dividend,divisor)
+    if num1 ^ num2 < 0:
+        quotient = add2(~quotient, 1)
+    remainder = dividend if dividend >0 else add2(~dividend,1)
+    return quotient, remainder
+print("除数是%d,余数是%d" % (divide1(100,3)))
+
+def divide2(num1,num2):
+    dividend = num1 if num1 > 0 else add2(~num1,1)
+    divisor = num2 if num2 > 0 else add2(~num2,1)
+    quotient = 0
+    remainder = 0
+    for i in range(31,-1,-1):
+        if (dividend >> i) >= divisor:
+            quotient = add2(quotient,1 << i)
+            dividend = substract(dividend,divisor << i)
+    if num1 ^ num2 < 0:
+        quotient = add2(~quotient, 1)
+    remainder = dividend if dividend >0 else add2(~dividend,1)
+    return quotient, remainder
+print("除数是%d,余数是%d" % (divide2(100,3)))
