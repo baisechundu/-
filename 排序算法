@@ -1,0 +1,32 @@
+#快速排序法
+class quick_sort(): 
+    def splitpoint(self, nums, start, end): #找出分隔点，即本代码中nums[start]在数组中的实际位置，注意end是可以取到的index值
+        key = nums[start]
+        leftmark = start + 1
+        rightmark = end
+        done = False
+        while not done:
+            while nums[leftmark] <= key and leftmark <= rightmark and leftmark < end:
+                leftmark += 1
+            while nums[rightmark] >= key and leftmark <= rightmark and rightmark > start:
+               rightmark -= 1
+            if leftmark >= rightmark:     #此处必须是等号，可以用长度为2的数组验证。
+                done = True
+            else:
+                nums[leftmark], nums[rightmark] = nums[rightmark], nums[leftmark]
+        nums[start], nums[rightmark] = nums[rightmark], nums[start]
+        return rightmark
+
+    def quicksorthelper(self, nums, start, end): 
+        if start < end:
+            split = self.splitpoint(nums, start, end)
+            self.quicksorthelper(nums, start, split - 1)
+            self.quicksorthelper(nums, split + 1, end)
+
+    def quicksort(self, nums): 
+        self.quicksorthelper(nums, 0, len(nums) - 1)
+        return nums
+        
+if __name__ == '__main__':
+    s = quick_sort()
+    print(s.quicksort([1,4,6,2,7,3,6,3]))
