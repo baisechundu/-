@@ -58,4 +58,5 @@ class ElementOperator:
 
 if __name__ == '__main__':
     s = ElementOperator()
-    print  s.subtract(5, -1)
+    print(s.subtract(100, -3))
+    print(s.multiply(100, -3))
