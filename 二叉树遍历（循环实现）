@@ -38,3 +38,24 @@ def postorderTraversal(self, root):
             stack.append(cur.right)
         ans.append(cur.val)
     return ans[::-1]
+    
+#层次遍历
+def levelTraversal(root):
+    res = []
+    nums = [root]
+    while nums:
+        record = []
+        next_num = []
+        for node in nums:
+            if node == None:
+                continue
+            next_num.append(node.left)
+            next_num.append(node.right)
+            record.append(node.val)
+        if record:
+            res.append(record)
+        nums = next_num
+    return res
+    
+ #之字形遍历实现
+ 
