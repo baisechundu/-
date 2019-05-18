@@ -1,0 +1,69 @@
+#这次比较的对象是最后的元素，适当改动部分即可
+class quick_sort():
+    def splitpoint(self, nums, start, end):
+        key = nums[end]
+        leftmark = start
+        rightmark = end - 1
+        done = False
+        while not done:
+            while nums[leftmark] <= key and leftmark <= rightmark and leftmark < end:
+                leftmark += 1
+            while nums[rightmark] >= key and leftmark <= rightmark and rightmark > start:
+               rightmark -= 1
+            if leftmark >= rightmark:
+                done = True
+            else:
+                nums[leftmark], nums[rightmark] = nums[rightmark], nums[leftmark]
+        nums[end], nums[leftmark] = nums[leftmark], nums[end]
+        return rightmark
+
+    def quicksorthelper(self, nums, start, end):
+        if start < end:
+            split = self.splitpoint(nums, start, end)
+            self.quicksorthelper(nums, start, split - 1)
+            self.quicksorthelper(nums, split + 1, end)
+
+    def quicksort(self, nums):
+        self.quicksorthelper(nums, 0, len(nums) - 1)
+        return nums
+if __name__ == '__main__':
+    s = quick_sort()
+    print(s.quicksort([1, 4, 6, 2, 7, 3, 6, 3]))
+    print(s.quicksort([13, 41, 62, 28, 72, 39, 64, 37]))
+
+#随机快速排序法
+from random import randint
+class quick_random_sort():
+    def splitpoint(self, nums, start, end):
+        index = randint(start, end)
+        key = nums[index]
+        leftmark = start
+        rightmark = end
+        done = False
+        while not done:
+            while nums[leftmark] <= key and leftmark <= rightmark and leftmark < end:
+                leftmark += 1
+            while nums[rightmark] >= key and leftmark <= rightmark and rightmark > start:
+               rightmark -= 1
+            if leftmark >= rightmark:
+                done = True
+            else:
+                nums[leftmark], nums[rightmark] = nums[rightmark], nums[leftmark]
+        if index > leftmark:
+            nums[index], nums[leftmark] = nums[leftmark], nums[index]
+            return leftmark
+        else:
+            nums[index], nums[rightmark] = nums[rightmark], nums[index]
+            return rightmark
+
+    def quicksorthelper(self, nums, start, end):
+        if start < end:
+            split = self.splitpoint(nums, start, end)
+            self.quicksorthelper(nums, start, split - 1)
+            self.quicksorthelper(nums, split + 1, end)
+if __name__ == '__main__':
+    s = quick_random_sort()
+    print(s.quicksort([1, 4, 6, 2, 7, 3, 6, 3]))
+    print(s.quicksort([13, 41, 62, 28, 72, 39, 64, 37]))
+    print(s.quicksort([1]))
+    print(s.quicksort([]))
