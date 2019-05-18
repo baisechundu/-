@@ -1,0 +1,40 @@
+#   前序
+def preorderTraversal(self, root: TreeNode) -> List[int]:
+    res_list = []  # 用来存放所有结点值
+    stack = []  # 只用来存放根结点的值
+    while root != None or stack:
+        if root == None:
+            root = stack.pop()  # 如果遍历到的根结点为空了，那就从stack中弹出根结点
+            root = root.right  # 然后将右节点作为根结点，开始递归
+        else:
+            stack.append(root)  # 如果根结点不为空，stack添加根结点
+            res_list.append(root.val)  # 将根结点的值也添加res_list
+            root = root.left  # 再把左结点的值作为根节点，开始递归
+    return res_list
+
+#中序遍历
+
+def inorderTraversal(self, root):
+    result, stack, position = [], [], root
+    while position or stack:
+        while position:
+            stack.append(position)
+            position = position.left
+        position = stack.pop()
+        result.append(position.val)
+        position = position.right
+    return result
+
+#后序遍历
+def postorderTraversal(self, root):
+    if root==None:
+         return []
+    stack,ans=[root],[]
+    while stack:
+        cur=stack.pop()
+        if cur.left:
+            stack.append(cur.left)
+        if cur.right:
+            stack.append(cur.right)
+        ans.append(cur.val)
+    return ans[::-1]
